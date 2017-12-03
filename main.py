@@ -28,6 +28,15 @@ def read():
     match("ID")
     
 
+def mulop():
+    
+    if Parser_input[row][0]=='*':
+        match('*')
+       
+    else:
+        match('/')
+
+
 def addop():
     if Parser_input[row][0] == '+':
         match('+')
@@ -37,15 +46,7 @@ def addop():
     
     print 'addop found\n'
     
-
-def simple_exp():
-    term()
-    if Parser_input[row][0] == '+' or Parser_input[row][0] == '-' :
-        addop()
-        term()
-        
-    print 'simple_exp found\n'
-
+    
 def comparison_operator():
     
     if Parser_input[row][0] == '<':
@@ -53,9 +54,22 @@ def comparison_operator():
     else:
         match('=')
       
-    print 'Comparison operator found\n'
+    print 'Comparison operator found\n' 
+
+def write_stmt():
+    match('write')
+    exp()
+    print 'write statement found'
     
+def simple_exp():
+    term()
     
+    if Parser_input[row][0] == '+' or Parser_input[row][0] == '-' :
+        addop()
+        term()
+        
+    print 'simple_exp found\n'
+
 def exp():
     
     simple_exp()
@@ -66,29 +80,32 @@ def exp():
        
     print 'exp found\n'
 
-
-def write_stmt():
-    match('write')
-    exp()
-    print 'write statement found'
-
-    
 def assign_stmt():
     match('ID')
     exp()
     print 'assignment_statement found\n'
     
 def factor():
-    if temporary_list[row][0] == '(':
+    if Parser_input[row][0] == '(':
+        match('(')
         exp()
         
-    else:
+    elif Parser_input[row][1] == 'number' :
         match('number')
         print 'factor found\n'
        
-    else:
-        match('ID'):
+    elif Parser_input[row][1] == 'ID':
+        match('ID')
         print 'factor found\n '
        
     else:
         print 'factor error no such number , identifier or (exp)\n'
+        
+        
+def term():
+    factor()
+    while Parser_input == '*' or Parser_input == '/':
+        mulop()
+        factor()
+       
+    print 'term found\n'

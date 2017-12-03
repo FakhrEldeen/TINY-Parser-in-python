@@ -40,7 +40,7 @@ def addop():
 
 def simple_exp():
     term()
-    if Parser_input[row][0] == '+' || Parser_input[row][0] == '-' :
+    if Parser_input[row][0] == '+' or Parser_input[row][0] == '-' :
         addop()
         term()
         
@@ -60,7 +60,7 @@ def exp():
     
     simple_exp()
     
-    if Parser_input[row][0] == '<' || Parser_input[row][0] == '=':
+    if Parser_input[row][0] == '<' or Parser_input[row][0] == '=':
         comparison_operator()
         simple_exp()
        

@@ -7,14 +7,13 @@ for i in f_lines:
     Parser_input.append(i.split(' : '))
 
 global row
-
+global Error
 row=0
 
 def advance_input():
     global row
     row += 1
-    
-    
+
 def match(str):
     global Error
     if Parser_input[row][0] == str:
@@ -35,11 +34,70 @@ def read():
     if Error == 0:
         print("Read found!")
     else:
-         print ('ERROR Found : Read statment is not correct \n')
+         print ('ERROR found : Read statment is not correct')
+
+def repeat ():
+    match ("repeat")
+    stmt_seq()
+    match ("until")
+    if Error == 0:
+        print("Repeat found!")
+    else:
+         print ('ERROR found : Repeat statment is not correct')
+
+
+def mulop():
+    if Parser_input[row][0]== "*":
+        match("*")
+    elif Parser_input[row][0]== "/":
+        match("/")
+    else :
+        global Error
+        Error =1
+
+
+def term():
+    factor()
+    if Parser_input[row][0] == "*" or Parser_input[row][0] == "/"
+        mulop()
+    factor()
 
 
 
 
-print(Parser_input[row][0])
-advance_input()
-print(Parser_input[row][0])
+
+def if_stmt():
+    match("if")
+    exp()
+    match("then")
+    stmt_seq()
+    if Parser_input[row][0] == "else":
+        stmt_seq()
+    match("end")
+
+
+
+def statement():
+    if Parser_input[row][0] == "if":
+        if_stmt()
+    elif Parser_input[row][0] == "repeat":
+        repeat()
+    elif Parser_input[row][1] == "Assignment":
+        assignment()
+    elif Parser_input[row][0] == "read":
+        read()
+    elif Parser_input[row][0] == "write":
+        write()
+    else:
+        global Error
+        Error = 1
+
+
+
+
+def stmt_seq():
+    statement()
+    if Parser_input[row][0] == ";":
+        statement()
+
+

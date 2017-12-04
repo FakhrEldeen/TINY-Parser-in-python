@@ -1,0 +1,32 @@
+read : Reserved word
+x : ID
+; : Special sympol
+if : Reserved word
+0 : number
+< : Special sympol
+x : ID
+then : Reserved word
+fact : ID
+:= : Assignment
+1 : number
+; : Special sympol
+repeat : Reserved word
+fact : ID
+:= : Assignment
+fact : ID
+* : Special sympol
+x : ID
+; : Special sympol
+x : ID
+:= : Assignment
+x : ID
+- : Special sympol
+1 : number
+until : Reserved word
+x : ID
+= : Special sympol
+0 : number
+; : Special sympol
+write : Reserved word
+fact : ID
+end : Reserved word

@@ -38,10 +38,10 @@ def mulop():
         match('/')
 
     if Error == 0:
-        print ('mul operator found\n')
+        print ('mul operator found')
 
     else:
-        print ("can't match mull operator , error in mul operator\n")
+        print ("can't match mull operator , error in mul operator")
 
 
 def addop():
@@ -52,10 +52,10 @@ def addop():
         match('-')
 
     if Error == 0:
-        print ('addop found\n')
+        print ('addop found')
 
     else:
-        print ("can't match addop , error in addop\n")
+        print ("can't match addop , error in addop")
 
 def comparison_operator():
 
@@ -65,13 +65,19 @@ def comparison_operator():
         match('=')
 
     if Error == 0:
-        print ('Comparison operator found\n')
+        print ('Comparison operator found')
 
     else:
-        print ("can't match comparison operator\n")
+        print ("can't match comparison operator")
 
 def program():
     stmt_seq()
+
+    if Error ==0 :
+        print ('program found')
+
+    else:
+        print ('Error in the Program')
 
 def read():
     global Error
@@ -79,7 +85,7 @@ def read():
     match("ID")
     if Error == 0:
 
-        print ("Read found!")
+        print ("Read found")
     else:
          print ('ERROR found : Read statment is not correct')
 
@@ -88,8 +94,9 @@ def repeat ():
     match ("repeat")
     stmt_seq()
     match ("until")
+    exp()
     if Error == 0:
-        print("Repeat found!")
+        print("Repeat found")
     else:
          print ('ERROR found : Repeat statment is not correct')
 
@@ -127,36 +134,24 @@ def if_stmt():
     else:
         print("ERROR in if statement")
 
+def assign_stmt():
+    global Error
+    match('ID')
+    match(":=")
+    exp()
 
-def statement():
-    if Parser_input[row][0] == "if":
-        if_stmt()
-    elif Parser_input[row][0] == "repeat":
-        repeat()
-    elif Parser_input[row][1] == "Assignment":
-        assignment()
-    elif Parser_input[row][0] == "read":
-        read()
-    elif Parser_input[row][0] == "write":
-        write()
+    if Error == 0:
+        print ('assignment_statement found')
+
     else:
-        global Error
-        Error = 1
-
-
-
-
-
-
-
-
+        print ("migth be an error in identifier")
 
 def statement():
     if Parser_input[row][0] == "if":
         if_stmt()
     elif Parser_input[row][0] == "repeat":
         repeat()
-    elif Parser_input[row][1] == "Assignment":
+    elif Parser_input[row][1] == "ID" and Parser_input[row+1][1] == "Assignment":
         assign_stmt()
     elif Parser_input[row][0] == "read":
         read()
@@ -171,7 +166,11 @@ def stmt_seq():
     while Parser_input[row][0] == ";":
         advance_input()
         statement()
+        if row > (len(Parser_input)-1):
+            break
 
+    if Error == 0:
+        print ('Statement sequence found')
 
 def write_stmt():
     global Error
@@ -179,20 +178,19 @@ def write_stmt():
     exp()
 
     if Error == 0:
-        print ('write statement found\n')
+        print ('write statement found')
 
     else :
-        print ('Error in write statement\n')
+        print ('Error in write statement')
 
 def simple_exp():
     term()
+    if row <= (len(Parser_input)-1):
+        if Parser_input[row][0] == '+' or Parser_input[row][0] == '-' :
+            addop()
+            term()
 
-    if Parser_input[row][0] == '+' or Parser_input[row][0] == '-' :
-        addop()
-        term()
-
-    print ('simple_exp found\n')
-
+    print ('simple_exp found')
 
 
 
@@ -201,61 +199,54 @@ def exp():
 
     simple_exp()
 
-    if Parser_input[row][0] == '<' or Parser_input[row][0] == '=':
-        comparison_operator()
-        simple_exp()
+    if row <= (len(Parser_input)-1):
+        if Parser_input[row][0] == '<' or Parser_input[row][0] == '=' :
+            comparison_operator()
+            simple_exp()
 
-    print ('exp found\n')
+    print ('exp found')
 
 
-def assign_stmt():
-    global Error
-    match('ID')
-    exp()
-
-    if Error == 0:
-        print ('assignment_statement found\n')
-
-    else:
-        print ("migth be an error in identifier\n")
 
 def factor():
     global Error
     if Parser_input[row][0] == '(':
         match('(')
         exp()
+        match(')')
 
     elif Parser_input[row][1] == 'number' :
         match('number')
 
         if Error == 0:
-            print ('factor found\n')
+            print ('factor found as a number')
 
         else:
-            print ('factor error , might be an error in matching number\n')
+            print ('factor error , might be an error in matching number')
 
     elif Parser_input[row][1] == 'ID':
         match('ID')
 
         if Error == 0:
-            print ('factor found\n')
+            print ('factor found as an identifier')
 
         else:
-            print ('factor error , might be an error in matching identifier\n')
+            print ('factor error , might be an error in matching identifier')
 
     else:
-
         Error=1
-        print ('factor error no such number , identifier or (exp)\n')
+        print ('factor error no such number , identifier or (exp)')
 
 
 def term():
     factor()
-    while Parser_input == '*' or Parser_input == '/':
+    while Parser_input[row][0] == '*' or Parser_input[row][0] == '/':
         mulop()
         factor()
+        if row > (len(Parser_input)-1):
+            break
 
-    print ('term found\n')
 
+    print ('term found')
 
 program()

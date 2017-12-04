@@ -16,6 +16,7 @@ def advance_input():
     row += 1         
     return 
 
+
 def match(str):
     global Error
     if Parser_input[row][0] == str:
@@ -77,19 +78,46 @@ def read():
     match("read")
     match("ID")
     if Error == 0:
+
         print "Read found!"
     else:
          print 'ERROR found : Read statment is not correct'           
             
+
+
+
+
+
+
 def repeat ():
     match ("repeat")
     stmt_seq()
     match ("until")
     if Error == 0:
-        print "Repeat found!"
+        print("Repeat found!")
     else:
-         print 'ERROR found : Repeat statment is not correct'
-              
+         print ('ERROR found : Repeat statment is not correct')
+
+
+def mulop():
+    if Parser_input[row][0]== "*":
+        match("*")
+    elif Parser_input[row][0]== "/":
+        match("/")
+    else :
+        global Error
+        Error =1
+
+
+def term():
+    factor()
+    if Parser_input[row][0] == "*" or Parser_input[row][0] == "/"
+        mulop()
+    factor()
+
+
+
+
 def if_stmt():
     match("if")
     exp()
@@ -98,6 +126,30 @@ def if_stmt():
     if Parser_input[row][0] == "else":
         stmt_seq()
     match("end")
+
+
+def statement():
+    if Parser_input[row][0] == "if":
+        if_stmt()
+    elif Parser_input[row][0] == "repeat":
+        repeat()
+    elif Parser_input[row][1] == "Assignment":
+        assignment()
+    elif Parser_input[row][0] == "read":
+        read()
+    elif Parser_input[row][0] == "write":
+        write()
+    else:
+        global Error
+        Error = 1
+
+
+
+
+
+
+
+
 
 def statement():
     if Parser_input[row][0] == "if":
@@ -120,6 +172,7 @@ def stmt_seq():
         advance_input()
         statement()
 
+
 def write_stmt():
     global Error
     match('write')
@@ -139,6 +192,14 @@ def simple_exp():
         term()
         
     print 'simple_exp found\n'
+    
+def stmt_seq():
+    statement()
+    if Parser_input[row][0] == ";":
+        statement()
+
+
+
 
 def exp():
     
@@ -149,6 +210,7 @@ def exp():
         simple_exp()
        
     print 'exp found\n'
+
 
 def assign_stmt():
     global Error
@@ -198,3 +260,4 @@ def term():
         factor()
        
     print ('term found\n')
+
